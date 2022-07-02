@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<HTML>
+	<HEAD>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+		<script>
+			function doc1()
+			{
+				document.write("<h2>Методы объекта 'document' </h2><br>");
+				for(v in document)
+					document.write("document."+v+" :: <b>"+document[v]+"</b></br>");
+			}
+			function win1()
+			{
+				document.write("<h2>Методы объекта 'window'</h2><br>");
+				for(v in document)
+					document.write("window."+v+" :: <b>"+window[v]+"</b></br>");
+			}
+		</script>
+	</HEAD>
+	<BODY>
+        <FORM>
+            <INPUT TYPE=button VALUE="Методы 'document'" onClick="doc1();">
+            <INPUT TYPE=button VALUE="Методы 'window2'" onClick="win1();">
+        </FORM>
+	</BODY>
+</HTML>
