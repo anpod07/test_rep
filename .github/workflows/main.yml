@@ -1,6 +1,7 @@
 name: my_test_CI
 env:
-  IP_ADDR: "45.8.249.139"
+  IP_ADDR: "3.125.40.249"
+  SSH_USER: "root"
   
 on:
   push:
@@ -24,5 +25,5 @@ jobs:
     - name: deploy my html
       run: scp -o StrictHostKeyChecking=no \
                -o UserKnownHostsFile=/dev/null \
-               -r ./* ${{ secrets.SSH_USER }}@${{ env.IP_ADDR}}:/var/www/html/
+               -r ./* ${{ env.SSH_USER }}@${{ env.IP_ADDR}}:/var/www/html/
                
