@@ -22,6 +22,8 @@ jobs:
       run: |
         eval $(ssh-agent -s)
         ssh-add <(echo "${{ secrets.SSH_SECRET_KEY }}")
+        mkdir -p ~/.ssh
+        '[[ -f /.dockerenv ]] && echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config'
     - name: deploy my html
       run: scp -o StrictHostKeyChecking=no \
                -o UserKnownHostsFile=/dev/null \
