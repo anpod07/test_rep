@@ -21,7 +21,7 @@ jobs:
     - name: establish SSH connection
       run: |
         eval $(ssh-agent -s)
-        ssh-add <(echo "${{ secrets.SSH_PRIVATE_KEY }}")
+        ssh-add <(echo "${{ secrets.SSH_SECRET_KEY }}")
     - name: deploy my html
       run: scp -o StrictHostKeyChecking=no \
                -o UserKnownHostsFile=/dev/null \
