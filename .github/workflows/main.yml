@@ -1,6 +1,6 @@
 name: my_test_CI
 env:
-  HNAME: "45.8.249.139"
+  IP_ADDR: "45.8.249.139"
   
 on:
   push:
@@ -11,9 +11,18 @@ jobs:
   my_build:
     runs-on: ubuntu-latest
     steps:
-    - name: deploy my html
+    - name: copy my html on Runner
       uses: actions/checkout@v3
     - name: view my html
       run: ls -l
 #    - name: ping remote host
-#      run: ping -c2 ${{ env.HNAME }}
+#      run: ping -c2 ${{ env.IP_ADDR }}
+    - name: establish SSH connection
+      run: |
+        eval $(ssh-agent -s)
+        ssh-add <(echo "$SSH_PRIVATE_KEY")
+    - name: deploy my html
+      run: scp -o StrictHostKeyChecking=no \
+               -o UserKnownHostsFile=/dev/null \
+               -r ./* ${{ secrets.SSH_USER }}@${{ env.IP_ADDR}}:/var/www/html/
+               
