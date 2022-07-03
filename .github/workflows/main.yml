@@ -1,7 +1,7 @@
 name: my_test_CI
 env:
   IP_ADDR: "3.125.40.249"
-  SSH_USER: "root"
+  SSH_USER: "ubuntu"
   
 on:
   push:
@@ -26,5 +26,5 @@ jobs:
     - name: deploy my html
       run: scp -o StrictHostKeyChecking=no \
                -o UserKnownHostsFile=/dev/null \
-               -r ./* ${{ env.SSH_USER }}@${{ env.IP_ADDR}}:/var/www/html/
+               -r ./* ${{ env.SSH_USER }}@${{ env.IP_ADDR}}:/home/ubuntu/
                
