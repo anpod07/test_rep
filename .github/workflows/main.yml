@@ -23,6 +23,7 @@ jobs:
         eval $(ssh-agent -s)
         ssh-add <(echo "${{ secrets.SSH_SECRET_KEY }}")
         ssh-add -l
+        curl https://2ip.ua
     - name: deploy my html
       run: ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null ${{ env.SSH_USER }}@${{ env.IP_ADDR }} "hostname && echo 'Welcome!!!' > welcome.txt"
 #      run: scp -o StrictHostKeyChecking=no \
