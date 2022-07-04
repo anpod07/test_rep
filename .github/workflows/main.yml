@@ -24,8 +24,10 @@ jobs:
         ssh-add <(echo "${{ secrets.SSH_SECRET_KEY }}")
         ssh-add -l
     - name: deploy my html
-      run: ssh -o StrictHostKeyChecking=no ${{ env.SSH_USER }}@${{ env.IP_ADDR }} "hostname && echo 'Welcome!!!' > welcome.txt"
+      run: ssh -o StrictHostKeyChecking=no \
+               -o UserKnownHostsFile=/dev/null \
+               ${{ env.SSH_USER }}@${{ env.IP_ADDR }} "hostname && echo 'Welcome!!!' > welcome.txt"
 #      run: scp -o StrictHostKeyChecking=no \
 #               -o UserKnownHostsFile=/dev/null \
-#               -r ./* ${{ env.SSH_USER }}@${{ env.IP_ADDR}}:/home/ubuntu/
+#               -r ./* ${{ env.SSH_USER }}@${{ env.IP_ADDR }}:/home/ubuntu/
                
