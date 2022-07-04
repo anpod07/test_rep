@@ -1,7 +1,7 @@
 name: my_test_CI
 env:
   IP_ADDR: "3.120.131.186"
-  SSH_USER: "ubuntu"
+  SSH_USER: "root"
   
 on:
   push:
@@ -26,7 +26,8 @@ jobs:
 #      run: ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -vT ${{ env.SSH_USER }}@${{ env.IP_ADDR }}
     - name: deploy my html
       #run: ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null ${{ env.SSH_USER }}@${{ env.IP_ADDR }} "hostname && echo 'Welcome!!!' > welcome.txt"
-      run: scp -o StrictHostKeyChecking=no \
-               -o UserKnownHostsFile=/dev/null \
-               -r ./* ${{ env.SSH_USER }}@${{ env.IP_ADDR }}:/home/ubuntu/
-               
+      run: |
+        scp -o StrictHostKeyChecking=no \
+            -o UserKnownHostsFile=/dev/null \
+            -r ./* ${{ env.SSH_USER }}@${{ env.IP_ADDR }}:/var/www/html/
+            
