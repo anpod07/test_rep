@@ -21,9 +21,8 @@ jobs:
     - name: establish SSH connection
       run: |
         eval $(ssh-agent -s)
-        ssh-add <(echo "${{ secrets.SSH_SECRET_KEY }}")
+        ssh-add <(echo "${{ secrets.SSH_MY_KEY }}")
         ssh-add -l
-#        curl https://2ip.ua
     - name: test ssh connection
       run: ssh -vT ${{ env.SSH_USER }}@${{ env.IP_ADDR }}
 #    - name: deploy my html
