@@ -20,15 +20,13 @@ jobs:
 #      run: ping -c2 ${{ env.IP_ADDR }}
     - name: establish SSH connection
       run: |
-        mkdir -p ~/.ssh
-        chmod 700 ~/.ssh
+        mkdir -p ~/.ssh && chmod 700 ~/.ssh
         echo "${{ secrets.SSH_SECRET_KEY }}" > ~/.ssh/id_rsa && chmod 400 ~/.ssh/id_rsa
-        ls -l ~/.ssh/id_rsa
-    - name: test ssh connection
-      run: ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -vT ${{ env.SSH_USER }}@${{ env.IP_ADDR }}
-#    - name: deploy my html
-#      run: ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null ${{ env.SSH_USER }}@${{ env.IP_ADDR }} "hostname && echo 'Welcome!!!' > welcome.txt"
-#      run: scp -o StrictHostKeyChecking=no \
-#               -o UserKnownHostsFile=/dev/null \
-#               -r ./* ${{ env.SSH_USER }}@${{ env.IP_ADDR }}:/home/ubuntu/
+#    - name: test ssh connection
+#      run: ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -vT ${{ env.SSH_USER }}@${{ env.IP_ADDR }}
+    - name: deploy my html
+      #run: ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null ${{ env.SSH_USER }}@${{ env.IP_ADDR }} "hostname && echo 'Welcome!!!' > welcome.txt"
+      run: scp -o StrictHostKeyChecking=no \
+               -o UserKnownHostsFile=/dev/null \
+               -r ./* ${{ env.SSH_USER }}@${{ env.IP_ADDR }}:/home/ubuntu/
                
