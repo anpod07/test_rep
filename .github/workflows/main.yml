@@ -1,6 +1,6 @@
 name: my_test_CI
 env:
-  IP_ADDR: "3.120.131.186"
+  IP_ADDR: "3.74.157.124"
   SSH_USER: "root"
   
 on:
