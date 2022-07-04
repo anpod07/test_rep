@@ -1,6 +1,6 @@
 name: my_test_CI
 env:
-  IP_ADDR: "18.194.119.138"
+  IP_ADDR: "3.120.131.186"
   SSH_USER: "ubuntu"
   
 on:
@@ -21,12 +21,12 @@ jobs:
     - name: establish SSH connection
       run: |
         eval $(ssh-agent -s)
-        ssh-add <(echo "${{ secrets.SSH_MY_KEY }}")
+        ssh-add <(echo "${{ secrets.SSH_SECRET_KEY }}")
         ssh-add -l
         mkdir -p ~/.ssh
         chmod 700 ~/.ssh
     - name: test ssh connection
-      run: ssh -vT ${{ env.SSH_USER }}@${{ env.IP_ADDR }}
+      run: ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -vT ${{ env.SSH_USER }}@${{ env.IP_ADDR }}
 #    - name: deploy my html
 #      run: ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null ${{ env.SSH_USER }}@${{ env.IP_ADDR }} "hostname && echo 'Welcome!!!' > welcome.txt"
 #      run: scp -o StrictHostKeyChecking=no \
