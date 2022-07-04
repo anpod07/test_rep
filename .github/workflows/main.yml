@@ -23,6 +23,8 @@ jobs:
         eval $(ssh-agent -s)
         ssh-add <(echo "${{ secrets.SSH_MY_KEY }}")
         ssh-add -l
+        mkdir -p ~/.ssh
+        chmod 700 ~/.ssh
     - name: test ssh connection
       run: ssh -vT ${{ env.SSH_USER }}@${{ env.IP_ADDR }}
 #    - name: deploy my html
