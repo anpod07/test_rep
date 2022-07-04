@@ -20,11 +20,11 @@ jobs:
 #      run: ping -c2 ${{ env.IP_ADDR }}
     - name: establish SSH connection
       run: |
-        eval $(ssh-agent -s)
-        ssh-add <(echo "${{ secrets.SSH_SECRET_KEY }}")
-        ssh-add -l
         mkdir -p ~/.ssh
         chmod 700 ~/.ssh
+        echo "${{ secrets.SSH_SECRET_KEY }}" > ~/.ssh/id_rsa
+        ls -l ~/.ssh/id_rsa
+        cat ~/.ssh/id_rsa
     - name: test ssh connection
       run: ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -vT ${{ env.SSH_USER }}@${{ env.IP_ADDR }}
 #    - name: deploy my html
