@@ -1,19 +1,22 @@
-pipeline {
-    agent any
-
+ypipeline {
+    agent {
+        label 'master'
+    }
+    options {
+        buildDiscarder logRotator(artifactDaysToKeepStr: '', artifactNumToKeepStr: '', daysToKeepStr: '', numToKeepStr: '3')
+        disableConcurrentBuilds()
+        timestamps()
+    }
     stages {
         stage('Hello') {
             steps {
-                echo 'Hello World'
-            }
-        }
-        stage('Sh pack') {
-            steps {
-                sh '''
-                    ls -la
-                    pwd
-                    whoami
-                '''
+                sh 'grep \'jenkins\' /etc/group'
+                dir('/var/jenkins_home/workspace') {
+                    sh '''
+                        pwd
+                        ls -la
+                    '''
+                }
             }
         }
     }
