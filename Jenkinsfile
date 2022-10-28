@@ -10,6 +10,7 @@ pipeline {
             steps {
                 dir('/var/jenkins_home/workspace') {
                     sh 'ls -la'
+                    sh 'sleep 5'
                 }
             }
         }
