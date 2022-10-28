@@ -1,7 +1,7 @@
-properties([disableConcurrentBuilds()])
 pipeline {
     agent { label 'master' }
     options {
+        disableConcurrentBuilds()
         buildDiscarder logRotator(artifactDaysToKeepStr: '', artifactNumToKeepStr: '', daysToKeepStr: '', numToKeepStr: '3')
         timestamps()
     }
