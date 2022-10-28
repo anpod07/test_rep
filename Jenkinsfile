@@ -1,8 +1,8 @@
+properties([disableConcurrentBuilds()])
 pipeline {
     agent { label 'master' }
     options {
         buildDiscarder logRotator(artifactDaysToKeepStr: '', artifactNumToKeepStr: '', daysToKeepStr: '', numToKeepStr: '3')
-        disableConcurrentBuilds()
         timestamps()
     }
     triggers { pollSCM '* * * * *' }
