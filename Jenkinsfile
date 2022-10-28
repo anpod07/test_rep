@@ -5,7 +5,6 @@ pipeline {
         buildDiscarder logRotator(artifactDaysToKeepStr: '', artifactNumToKeepStr: '', daysToKeepStr: '', numToKeepStr: '3')
         timestamps()
     }
-    triggers { pollSCM '* * * * *' }
     stages {
         stage('Hello') {
             steps {
