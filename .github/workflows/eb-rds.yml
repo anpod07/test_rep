@@ -15,6 +15,6 @@ jobs:
     - name: copy my html on Runner
       uses: actions/checkout@v3
       with:
-        path: pyapp/
+        path: pyapp/*
     - name: view my html
       run: ls -l
