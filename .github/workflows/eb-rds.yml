@@ -1,0 +1,20 @@
+name: Deploy-Pyapp-to-EB-with-RDS
+env:
+  IP_ADDR: "3.74.157.124"
+  SSH_USER: "root"
+
+on:
+  push:
+    branches:
+    - main
+
+jobs:
+  my_build:
+    runs-on: ubuntu-latest
+    steps:
+    - name: copy my html on Runner
+      uses: actions/checkout@v3
+      with:
+        path: pyapp/
+    - name: view my html
+      run: ls -l
