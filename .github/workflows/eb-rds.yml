@@ -17,7 +17,7 @@ jobs:
     - name: copy my html on Runner
       uses: actions/checkout@v3
     - name: zip package
-#      run: |
+      run: |
         cd pyapp/
         zip -r ${{ env.ZIP_PACK }} ./
         mv ./${{ env.ZIP_PACK }} ..
@@ -34,7 +34,7 @@ jobs:
         run: aws s3 cp ${{ env.ZIP_PACK }} ${{ S3_BUCKET }}
 
       - name: create new EB Application Version
-#        run: |
+        run: |
           aws elasticbeanstalk create-application-version \
           --application-name ${{ env.APP_NAME }} \
           --source-bundle S3Bucket="${{ S3_BUCKET }}",S3Key="${{ ZIP_PACK }}" \
@@ -42,7 +42,7 @@ jobs:
           --description "commit-sha-${{ github.sha }}"
 
       - name: deploy new EB Application Version
-#        run: |
+        run: |
              aws elasticbeanstalk update-environment \
              --environment-name ${{ env.APP_NAME }}-env-${{ github.sha }} \
              --version-label "commit-${{ github.sha }}"
