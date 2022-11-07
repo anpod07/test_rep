@@ -1,7 +1,9 @@
 name: Deploy-Pyapp-to-EB-with-RDS
 env:
-  IP_ADDR: "3.74.157.124"
-  SSH_USER: "root"
+  REGION: "eu-central-1"
+  ZIP_PACK: "pyapp.zip"
+  S3_BUCKET: "s3://anpod07-rds/"
+  APP_NAME: "my-pyapp-mysql"
 
 on:
   push:
@@ -14,7 +16,33 @@ jobs:
     steps:
     - name: copy my html on Runner
       uses: actions/checkout@v3
-      with:
-        files: pyapp
-    - name: view my html
-      run: ls -l
+    - name: zip package
+#      run: |
+        cd pyapp/
+        zip -r ${{ env.ZIP_PACK }} ./
+        mv ./${{ env.ZIP_PACK }} ..
+        cd ..
+
+      - name: AWS Creds
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_KEY }}
+          aws-region: ${{ env.REGION }}
+
+      - name: upload zip-package to S3
+        run: aws s3 cp ${{ env.ZIP_PACK }} ${{ S3_BUCKET }}
+
+      - name: create new EB Application Version
+#        run: |
+          aws elasticbeanstalk create-application-version \
+          --application-name ${{ env.APP_NAME }} \
+          --source-bundle S3Bucket="${{ S3_BUCKET }}",S3Key="${{ ZIP_PACK }}" \
+          --version-label "commit-${{ github.sha }}" \
+          --description "commit-sha-${{ github.sha }}"
+
+      - name: deploy new EB Application Version
+#        run: |
+             aws elasticbeanstalk update-environment \
+             --environment-name ${{ env.APP_NAME }}-env-${{ github.sha }} \
+             --version-label "commit-${{ github.sha }}"
