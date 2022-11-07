@@ -1,0 +1,26 @@
+name: Deploy-Pyapp-to-EB-with-RDS-test
+env:
+  REGION: "eu-central-1"
+  ZIP_PACK: "pyapp.zip"
+  S3_BUCKET: "s3://anpod07-rds/"
+  APP_NAME: "my-pyapp-mysql"
+
+on:
+  push:
+    branches:
+    - main
+
+jobs:
+  my_build:
+    runs-on: ubuntu-latest
+    steps:
+    - name: copy my html on Runner
+      uses: actions/checkout@v3
+    - name: zip package
+      run: |
+        cd pyapp/
+        zip -r ${{ env.ZIP_PACK }} ./
+        mv ./${{ env.ZIP_PACK }} ..
+        cd ..
+    - name: view results
+      run: ls -l
