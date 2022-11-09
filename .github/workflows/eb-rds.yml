@@ -58,10 +58,10 @@ jobs:
     - name: init new EB Application Version
       run: |
         eb init \
-        -i ${{ env.APP_NAME }} \
+        -i ${{ env.APP_NAME }}-env \
         -p ${{ env.AWS_PLATFORM }} \
         -k ${{ secrets.AWS_ID }} \
         --region ${{ env.REGION }}
 
     - name: deploy inited EB Application Version
-      run: eb deploy ${{ env.APP_NAME }} --version ${{ env.APP_NAME }}-${{ github.sha }}
+      run: eb deploy ${{ env.APP_NAME }}-env --version ${{ env.APP_NAME }}-${{ github.sha }}
