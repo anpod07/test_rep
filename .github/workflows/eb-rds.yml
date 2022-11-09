@@ -52,7 +52,7 @@ jobs:
         --application-name ${{ env.APP_NAME }} \
         --version-label ${{ env.APP_NAME }}-${{ github.sha }} \
         --region ${{ env.REGION }} \
-        --source-bundle S3Bucket="${{ env.S3_BUCKET }}",S3Key="${{ ZIP_PACK }}" \
+        --source-bundle S3Bucket="${{ env.S3_BUCKET }}",S3Key="${{ env.ZIP_PACK }}" \
         --auto-create-application
 
     - name: init new EB Application Version
