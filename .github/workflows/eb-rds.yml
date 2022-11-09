@@ -44,7 +44,7 @@ jobs:
         aws-region: ${{ env.REGION }}
 
     - name: upload zip-package to S3
-      run: aws s3 cp ${{ env.ZIP_PACK }} s3://${{ S3_BUCKET }}/
+      run: aws s3 cp ${{ env.ZIP_PACK }} s3://${{ env.S3_BUCKET }}/
 
     - name: creating EB Application version
       run: |
