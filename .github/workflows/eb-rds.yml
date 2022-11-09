@@ -2,8 +2,9 @@ name: Deploy-Pyapp-to-EB-with-RDS
 env:
   REGION: "eu-central-1"
   ZIP_PACK: "pyapp.zip"
-  S3_BUCKET: "s3://anpod07-rds/"
-  APP_NAME: "my-pyapp-mysql"
+  S3_BUCKET: "anpod07-rds"
+  APP_NAME: "test-rds-pyapp"
+  AWS_PLATFORM: "Python"
 
 on:
   push:
@@ -22,32 +23,45 @@ jobs:
         zip -r ${{ env.ZIP_PACK }} ./
         mv ./${{ env.ZIP_PACK }} ..
         cd ..
+    - name: view results
+      run: ls -l
+    - name: Install Python 3.9
+      uses: actions/setup-python@v4
+      with:
+        python-version: 3.9
+    - name: Install EB CLI using pip
+      run: |
+        python -m pip install --upgrade pip
+        pip install awsebcli --upgrade
+        aws --version
+        eb --version
 
-      - name: AWS Creds
-        uses: aws-actions/configure-aws-credentials@v1
-        with:
-          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY }}
-          aws-secret-access-key: ${{ secrets.AWS_SECRET_KEY }}
-          aws-region: ${{ env.REGION }}
+    - name: AWS Creds
+      uses: aws-actions/configure-aws-credentials@v1
+      with:
+        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY }}
+        aws-secret-access-key: ${{ secrets.AWS_SECRET_KEY }}
+        aws-region: ${{ env.REGION }}
 
-      - name: upload zip-package to S3
-        run: aws s3 cp ${{ env.ZIP_PACK }} ${{ S3_BUCKET }}
+    - name: upload zip-package to S3
+      run: aws s3 cp ${{ env.ZIP_PACK }} s3://${{ S3_BUCKET }}/
 
+    - name: creating EB Application version
+      run: |
+        aws elasticbeanstalk create-application-version \
+        --application-name ${{ env.APP_NAME }} \
+        --version-label ${{ env.APP_NAME }}-${{ github.sha }} \
+        --region ${{ env.REGION }} \
+        --source-bundle S3Bucket="${{ env.S3_BUCKET }}",S3Key="${{ ZIP_PACK }}" \
+        --auto-create-application
 
+    - name: init new EB Application Version
+      run: |
+        eb init \
+        -i ${{ env.APP_NAME }} \
+        -p ${{ env.AWS_PLATFORM }} \
+        -k ${{ secrets.AWS_ID }} \
+        --region ${{ env.REGION }}
 
-
-
-
-      - name: create new EB Application Version
-        run: |
-          aws elasticbeanstalk create-application-version \
-          --application-name ${{ env.APP_NAME }} \
-          --source-bundle S3Bucket="${{ S3_BUCKET }}",S3Key="${{ ZIP_PACK }}" \
-          --version-label "commit-${{ github.sha }}" \
-          --description "commit-sha-${{ github.sha }}"
-
-      - name: deploy new EB Application Version
-        run: |
-             aws elasticbeanstalk update-environment \
-             --environment-name ${{ env.APP_NAME }}-env-${{ github.sha }} \
-             --version-label "commit-${{ github.sha }}"
+    - name: deploy inited EB Application Version
+      run: eb deploy ${{ env.APP_NAME }} --version ${{ env.APP_NAME }}-${{ github.sha }}
