@@ -33,6 +33,11 @@ jobs:
       - name: upload zip-package to S3
         run: aws s3 cp ${{ env.ZIP_PACK }} ${{ S3_BUCKET }}
 
+
+
+
+
+
       - name: create new EB Application Version
         run: |
           aws elasticbeanstalk create-application-version \
