@@ -25,6 +25,4 @@ jobs:
         --filters "Name=private-ip-address,Values=172.31.47.94" \
         --query 'Reservations[*].Instances[*].PublicIpAddress' \
         --output text)
-
-    - name: print PublicIP
-      run: echo "PublicIP: ${PUBLICIP}"
+        echo "PublicIP: ${PUBLICIP}"
