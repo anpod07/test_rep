@@ -1,0 +1,30 @@
+name: Deploy-Pyapp-to-EB-with-RDS-test
+env:
+  REGION: "eu-central-1"
+
+on:
+  push:
+    branches:
+    - main
+
+jobs:
+  my_build:
+    runs-on: ubuntu-latest
+    steps:
+
+    - name: init AWS Creds
+      uses: aws-actions/configure-aws-credentials@v1
+      with:
+        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY }}
+        aws-secret-access-key: ${{ secrets.AWS_SECRET_KEY }}
+        aws-region: ${{ env.REGION }}
+
+    - name: get EC2 PublicIP
+      run: |
+        PUBLICIP=$(aws ec2 describe-instances \
+        --filters "Name=private-ip-address,Values=172.31.47.94" \
+        --query 'Reservations[*].Instances[*].PublicIpAddress' \
+        --output text)
+
+    - name: print PublicIP
+      run: echo "PublicIP: ${PUBLICIP}"
