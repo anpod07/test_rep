@@ -19,10 +19,13 @@ jobs:
         aws-secret-access-key: ${{ secrets.AWS_SECRET_KEY }}
         aws-region: ${{ env.REGION }}
 
+    # https://stackoverflow.com/questions/57968497/how-do-i-set-an-env-var-with-a-bash-expression-in-github-actions
     - name: get EC2 PublicIP
       run: |
-        PUBLICIP=$(aws ec2 describe-instances \
-        --filters "Name=private-ip-address,Values=172.31.47.94" \
+        echo "PUBLICIP=$(aws ec2 describe-instances \
+        --filters 'Name=private-ip-address,Values=172.31.47.94' \
         --query 'Reservations[*].Instances[*].PublicIpAddress' \
-        --output text)
-        echo "PublicIP: ${PUBLICIP}"
+        --output text)" >> $GITHUB_ENV
+
+    - name: print PublicIP
+      run: echo ${{ env.PUBLICIP }}
