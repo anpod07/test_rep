@@ -1,0 +1,3 @@
+Разрешаем ICMP под VPN
+======================
+Configuration -> Firewall -> Service Policy Rules -> Inspection Default (ПКМ: Edit) -> Rule Actions -> [V] ICMP
